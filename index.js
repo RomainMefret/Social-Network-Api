@@ -5,9 +5,9 @@ const morgan = require("morgan");
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
-const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
-dotenv.config({ path: "./config/.env" });
+require("dotenv").config({ path: "./config/.env" });
 
 require("./config/db");
 
@@ -15,6 +15,7 @@ require("./config/db");
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
+app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
