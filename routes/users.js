@@ -46,6 +46,7 @@ router.get("/:id", async (req, res) => {
     const user = await User.findById(req.params.id);
     const { password, updatedAt, ...other } = user._doc;
     res.status(200).json(other);
+    console.log(password);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -53,7 +54,7 @@ router.get("/:id", async (req, res) => {
 
 //follow a user
 
-router.put("/:id/follow", async (req, res) => {
+router.put("/follow/:id", async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
       const user = await User.findById(req.params.id);
@@ -75,7 +76,7 @@ router.put("/:id/follow", async (req, res) => {
 
 //unfollow a user
 
-router.put("/:id/unfollow", async (req, res) => {
+router.put("/unfollow/:id", async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
       const user = await User.findById(req.params.id);
