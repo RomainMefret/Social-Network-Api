@@ -33,6 +33,6 @@ exports.requireAuth = (req, res, next) => {
       }
     });
   } else {
-    console.log("No token, no chocolat");
+    console.log("No token, no bueno");
   }
 };
