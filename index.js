@@ -8,10 +8,14 @@ const postRoute = require("./routes/posts");
 const cookieParser = require("cookie-parser");
 const { userCheck, requireAuth } = require("./middleware/auth.middleware");
 const cors = require("cors");
+const multer = require("multer");
+const path = require("path");
 
 require("dotenv").config({ path: "./config/.env" });
 
 require("./config/db");
+
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 //middleware
 app.use(cors());
@@ -19,6 +23,24 @@ app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
 app.use(cookieParser());
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
+});
+
+const upload = multer({ storage: storage });
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  try {
+    return res.status(200).json("File uploded successfully");
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 app.get("*", userCheck);
 app.get("/jwtid", requireAuth, (req, res) => {
