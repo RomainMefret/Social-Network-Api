@@ -40,10 +40,21 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-//get a user
-router.get("/:id", async (req, res) => {
+//get a user by username
+router.get("/profilename/:username", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findOne({ username: req.params.username });
+    const { password, updatedAt, ...other } = user._doc;
+    res.status(200).json(other);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//get a user by userId
+router.get("/profileid/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
     const { password, updatedAt, ...other } = user._doc;
     res.status(200).json(other);
   } catch (err) {
